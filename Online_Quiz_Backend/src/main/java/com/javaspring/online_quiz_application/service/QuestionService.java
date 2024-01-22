@@ -1,12 +1,19 @@
 package com.javaspring.online_quiz_application.service;
 
 import com.javaspring.online_quiz_application.model.Question;
+import com.javaspring.online_quiz_application.repository.QuestionRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
+@RequiredArgsConstructor
+
 public class QuestionService implements IQuestionService {
 
+    private final QuestionRepository questionRepository;
     @Override
     public Question createQuestion(Question question) {
         return null;
