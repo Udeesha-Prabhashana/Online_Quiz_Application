@@ -54,5 +54,11 @@ public class QuestionController {
         return ResponseEntity.noContent().build();
     }
 
-    
+    @GetMapping("/subjects")
+    public ResponseEntity< List<String>> getAllSubjects(){
+        List<String> subjects = questionService.getAllSubjects();
+        return ResponseEntity.ok(subjects);
+    }
+
+
 }
