@@ -20,7 +20,7 @@ public interface IQuestionService {
 
     void deleteQuestion(Long id);
 
-    List<Question> getQuestionForUser(Integer numOfQuestions, String subject);
 
+    List<Question> getQuestionsForUser(Integer numOfQuestions, String subject);
 }
 

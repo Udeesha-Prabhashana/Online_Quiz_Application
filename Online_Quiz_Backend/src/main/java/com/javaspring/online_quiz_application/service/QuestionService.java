@@ -63,8 +63,14 @@ public class QuestionService implements IQuestionService {
     }
 
     @Override
-    public List<Question> getQuestionForUser(Integer numOfQuestions, String subject) {
+    public List<Question> getQuestionsForUser(Integer numOfQuestions, String subject) {
         Pageable pageable = PageRequest.of(0 , numOfQuestions);
         return questionRepository.findBySubject(subject, pageable).getContent();
     }
+
+//    @Override
+//    public List<Question> getQuestionForUser(Integer numOfQuestions, String subject) {
+//        Pageable pageable = PageRequest.of(0 , numOfQuestions);
+//        return questionRepository.findBySubject(subject, pageable).getContent();
+//    }
 }
