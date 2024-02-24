@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import { getSubjects } from '../../utils/QuizService'
+import { createQuestion, getSubjects } from '../../utils/QuizService'
 
 const AddQuestion = () => {
     const[question, setQuestion] = useState("")
     const[questionType, setQestionType] = useState("single")
-    const [choices, setchoices] = useState([""])
+    const [choices, setChoices] = useState([""])
     const [correctAnswers, setCorrectAnswers] = useState([""])
     const [subject, setSubject] = useState("")
     const [newSubject, setNewSubject] = useState("")
@@ -25,11 +25,61 @@ const AddQuestion = () => {
         const lastChoiceLetter = lastChoice ? lastChoice.charAt(0) : "A"
         const newChoiceLetter = String.fromCharCode(lastChoiceLetter.charCodeAt(0) + 1)
         const newChoice = `${ newChoiceLetter }`
-        setchoices(...choices ,  newChoice)
+        setChoices(...choices ,  newChoice)
     }
     
+    const handleRemoveChoice = (index) => {
+        setChoices(choices.filter((choice , i)=> i !==index))
+    }
 
+    const handleChoiceChange = (index, value) => {
+        setChoices(choices.map((choice, i)=>( i === index? value : choice)))
+    }
+    
+    const handleCorrectAnswerChange = (index, value) => {
+        setCorrectAnswers(correctAnswers.map((answer , i)=>( i === index ? value : answer)))
+    }
 
+    const handleCorrectAnswer = () => {
+        setCorrectAnswers([...correctAnswers, ""])
+    }
+
+    const handleRemoveCorrectAnswer = (index) => {
+        setCorrectAnswers((correctAnswers.filter((i)=> i !== index)))
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault()
+        try {
+            const result = {
+                question,
+                questionType,
+                choices,
+                correctAnswers: correctAnswers.map((answer) => {
+                    const choiceLetter = answer.charAt(0).toUpperCase()
+                    const choiceIndex = choiceLetter.charCodeAt(0) - 65
+                    return choiceIndex >= 0 && choiceIndex < choices.length ? choiceLetter : null
+                }),
+                subject
+            }
+            await createQuestion(result)
+            setQuestion("")
+            setQestionType("single")
+            setChoices([""])
+            setCorrectAnswers([""])
+            setSubject("")
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const handleAddSubject = () => {
+		if (newSubject.trim() !== "") {
+			setSubject(newSubject.trim())
+			setSubjectOptions([...subjectOptions, newSubject.trim()])
+			setNewSubject("")
+		}
+	}
 
     return (
       <div>
