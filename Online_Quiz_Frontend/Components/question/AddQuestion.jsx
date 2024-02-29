@@ -50,7 +50,7 @@ const AddQuestion = () => {
     }
 
     const handleRemoveCorrectAnswer = (index) => {
-        setCorrectAnswers((correctAnswers.filter((i)=> i !== index)))
+        setCorrectAnswers((correctAnswers.filter((answer ,i)=> i !== index)))
     }
 
     const handleSubmit = async (e) => {
@@ -88,24 +88,24 @@ const AddQuestion = () => {
 
     return (
         <div className='container'>
-            <div className="row-justify-content-center">
-                <div className="col-md-6 mt-5">
+            <div className="row justify-content-center">
+                <div className="col-md-18 mt-5 ">
                     <div className="card">
                         <div className="card-header">
                             <h5 className="card-title">Add New Question</h5>
 
                         </div>
                         <div className="card-body">
-                            <form onSubmit={handleSubmit} className='p-2'>
+                            <form onSubmit={handleSubmit} className="p-2">
                                 <div className="mb-3">
-                                    <label htmlFor="subject" className='form-label text-info'>
+                                    <label htmlFor="subject" className='form-label text-info '>
                                         Select a subject
                                     </label>
                                     <select
                                         id='subject'
                                         value={subject}
                                         onChange={(e) => setSubject(e.target.value)}
-                                        className='form-control'>
+                                        className='form-control '>
                                         <option value={""}>Select a Subject</option>
                                         <option value={"New"}>Add New Subject</option>
                                     </select>
