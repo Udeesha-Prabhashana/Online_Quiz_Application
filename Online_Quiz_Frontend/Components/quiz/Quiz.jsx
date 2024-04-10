@@ -24,6 +24,12 @@ const Quiz = () => {
             setQuizQuestions(questions)
         }
     }
+
+    const handleAnswerChange = (questionId , answer ) => {
+        setSelectedAnswers((prevAnswer) => {
+            const existingAnswerIndex = prevAnswer.findIndex((answerObj)=>answerObj.id === questionId )
+        })
+    }
   return (
     <div>Quiz</div>
   )
