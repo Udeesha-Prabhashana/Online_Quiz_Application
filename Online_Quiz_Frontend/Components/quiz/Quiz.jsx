@@ -26,10 +26,65 @@ const Quiz = () => {
     }
 
     const handleAnswerChange = (questionId , answer ) => {
-        setSelectedAnswers((prevAnswer) => {
-            const existingAnswerIndex = prevAnswer.findIndex((answerObj)=>answerObj.id === questionId )
+        setSelectedAnswers((prevAnswers) => {
+            const existingAnswerIndex = prevAnswers.findIndex((answerObj) => answerObj.id === questionId)
+            
+            const selectedAnswer = Array.isArray(answer)
+				? answer.map((a) => a.charAt(0))
+				: answer.charAt(0)
+
+			if (existingAnswerIndex !== -1) {
+				const updatedAnswers = [...prevAnswers]
+				updatedAnswers[existingAnswerIndex] = { id: questionId, answer: selectedAnswer }
+				console.log(updatedAnswers)
+				return updatedAnswers
+			} else {
+				const newAnswer = { id: questionId, answer: selectedAnswer }
+
+				return [...prevAnswers, newAnswer]
+			}
         })
     }
+
+    const isChecked = (questionId, choice) => {
+		const selectedAnswer = selectedAnswers.find((answer) => answer.id === questionId)
+		if (!selectedAnswer) {
+			return false
+		}
+		if (Array.isArray(selectedAnswer.answer)) {
+			return selectedAnswer.answer.includes(choice.charAt(0))
+		}
+		return selectedAnswer.answer === choice.charAt(0)
+    }
+    
+    const handleCheckboxChange = (questionId, choice) => {
+		setSelectedAnswers((prevAnswers) => {
+			const existingAnswerIndex = prevAnswers.findIndex((answerObj) => answerObj.id === questionId)
+			const selectedAnswer = Array.isArray(choice)
+				? choice.map((c) => c.charAt(0))
+				: choice.charAt(0)
+
+			if (existingAnswerIndex !== -1) {
+				const updatedAnswers = [...prevAnswers]
+				const existingAnswer = updatedAnswers[existingAnswerIndex].answer
+				let newAnswer
+				if (Array.isArray(existingAnswer)) {
+					newAnswer = existingAnswer.includes(selectedAnswer)
+						? existingAnswer.filter((a) => a !== selectedAnswer)
+						: [...existingAnswer, selectedAnswer]
+				} else {
+					newAnswer = [existingAnswer, selectedAnswer]
+				}
+				updatedAnswers[existingAnswerIndex] = { id: questionId, answer: newAnswer }
+				console.log(updatedAnswers)
+				return updatedAnswers
+			} else {
+				const newAnswer = { id: questionId, answer: [selectedAnswer] }
+				return [...prevAnswers, newAnswer]
+			}
+		})
+	}
+    
   return (
     <div>Quiz</div>
   )
