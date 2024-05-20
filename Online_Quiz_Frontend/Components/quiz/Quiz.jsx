@@ -4,7 +4,7 @@ import { fetchQuizForUser } from '../../utils/QuizService'
 const Quiz = () => {
 
     const [quizQuestions, setQuizQuestions] = useState([{
-        id:"", correctAnswer:"" , question: "" ,questionType: ""
+        id:"", correctAnswers:"" , question: "" ,questionType: ""
     }])
     const [selectedAnswers, setSelectedAnswers] = useState([{ id: "", answer: "" }])
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
@@ -83,8 +83,47 @@ const Quiz = () => {
 				return [...prevAnswers, newAnswer]
 			}
 		})
-	}
+    }
     
+    const handleSubmit = () => {
+    let scores = 0;
+    quizQuestions.forEach((question) => {
+        const selectedAnswer = selectedAnswers.find((answer) => answer.id === question.id);
+        if (selectedAnswer) {
+        const selectedOptions = Array.isArray(selectedAnswer.answer)
+            ? selectedAnswer.answer.map((option) => option.charAt(0))
+            : [selectedAnswer.answer.charAt(0)];
+        const correctOptions = Array.isArray(question.correctAnswers)
+            ? question.correctAnswers.map((option) => option.charAt(0))
+            : [question.correctAnswers.charAt(0)];
+        const isCorrect = selectedOptions.length === correctOptions.length && selectedOptions.every((option) => correctOptions.includes(option));
+        if (isCorrect) {
+            scores++;
+        }
+        }
+    });
+    setTotalScores(scores);
+    setSelectedAnswers([]);
+    setCurrentQuestionIndex(0);
+    navigate("/quiz-result", { state: { quizQuestions, totalScores: scores } });
+    };
+
+    const handleNextQuestion = () => {
+		if (currentQuestionIndex < quizQuestions.length - 1) {
+			setCurrentQuestionIndex((prevIndex) => prevIndex + 1)
+			console.log(selectedAnswers)
+		} else {
+			handleSubmit()
+		}
+	}
+
+	const handlePreviousQuestion = () => {
+		if (currentQuestionIndex > 0) {
+			setCurrentQuestionIndex((prevIndex) => prevIndex - 1)
+		}
+	}
+
+
   return (
     <div>Quiz</div>
   )
