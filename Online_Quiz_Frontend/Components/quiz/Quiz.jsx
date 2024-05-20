@@ -125,8 +125,45 @@ const Quiz = () => {
 
 
   return (
-    <div>Quiz</div>
-  )
+		<div className="p-5">
+			<h3 className="text-info">
+				Question {quizQuestions.length > 0 ? currentQuestionIndex + 1 : 0} of {quizQuestions.length}
+			</h3>
+
+			<h4 className="mb-4">
+				<pre>{quizQuestions[currentQuestionIndex]?.question}</pre>
+			</h4>
+
+			<AnswerOptions
+				question={quizQuestions[currentQuestionIndex]}
+				isChecked={isChecked}
+				handleAnswerChange={handleAnswerChange}
+				handleCheckboxChange={handleCheckboxChange}
+			/>
+
+			<div className="mt-4">
+				<button
+					className="btn btn-sm btn-primary me-2"
+					onClick={handlePreviousQuestion}
+					disabled={currentQuestionIndex === 0}>
+					Previous question
+				</button>
+				<button
+					className={`btn btn-sm btn-info ${
+						currentQuestionIndex === quizQuestions.length - 1 && "btn btn-sm btn-warning"
+					}`}
+					onClick={handleNextQuestion}
+					disabled={
+						!selectedAnswers.find(
+							(answer) =>
+								answer.id === quizQuestions[currentQuestionIndex]?.id || answer.answer.length > 0
+						)
+					}>
+					{currentQuestionIndex === quizQuestions.length - 1 ? "Submit quiz" : "Next question"}
+				</button>
+			</div>
+		</div>
+	)
 }
 
 export default Quiz
