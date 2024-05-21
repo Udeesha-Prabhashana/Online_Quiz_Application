@@ -9,6 +9,7 @@ import Navbar from '../Components/layout/NavBar'
 import Home from '../Components/Home'
 import Admin from '../Components/Admin'
 import UpdateQuestion from '../Components/question/UpdateQuestion'
+import GetAllQuiz from '../Components/quiz/GetAllQuiz'
 
 function App() {
 
@@ -24,7 +25,7 @@ function App() {
 
 					<Route path="/create-quiz" element={<AddQuestion />} />
 					<Route path="/update-quiz/:id" element={<UpdateQuestion />} />
-					{/* <Route path="/all-quizzes" element={<GetAllQuiz />} /> */}
+					<Route path="/all-quizzes" element={<GetAllQuiz />} />
 					<Route path="/quiz-result" element={<QuizResult />} />
 				</Routes>
 			</Router>

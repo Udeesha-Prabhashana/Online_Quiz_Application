@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'           //rafce
+import React, { useEffect, useState } from 'react'           //rafce
 import { GetAllQuestions, deleteQuestion } from '../../utils/QuizService'
 import { Link } from 'react-router-dom'
 import { FaPlus } from 'react-icons/fa'

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { createQuestion, getSubjects } from '../../utils/QuizService'
+import { Link } from "react-router-dom"
 
 const AddQuestion = () => {
     const[question, setQuestionText] = useState("")
@@ -25,13 +26,13 @@ const AddQuestion = () => {
         }
     }
 
-    const handleAddChoice = async () => {
-        const lastChoice = choices[choices.length - 1]
-        const lastChoiceLetter = lastChoice ? lastChoice.charAt(0) : "A"
-        const newChoiceLetter = String.fromCharCode(lastChoiceLetter.charCodeAt(0) + 1)
-        const newChoice = `${ newChoiceLetter }`
-        setChoices(...choices ,  newChoice)
-    }
+    const handleAddChoice = () => {
+		const lastChoice = choices[choices.length - 1]
+		const lastChoiceLetter = lastChoice ? lastChoice.charAt(0) : "A"
+		const newChoiceLetter = String.fromCharCode(lastChoiceLetter.charCodeAt(0) + 1)
+		const newChoice = `${newChoiceLetter}.`
+		setChoices([...choices, newChoice])
+	}
     
     const handleRemoveChoice = (index) => {
         setChoices(choices.filter((choice , i)=> i !==index))
@@ -46,8 +47,8 @@ const AddQuestion = () => {
     }
 
     const handleAddCorrectAnswer = () => {
-        setCorrectAnswers([...correctAnswers, ""])
-    }
+		setCorrectAnswers([...correctAnswers, ""])
+	}
 
     const handleRemoveCorrectAnswer = (index) => {
         setCorrectAnswers((correctAnswers.filter((answer ,i)=> i !== index)))
@@ -67,6 +68,8 @@ const AddQuestion = () => {
                 }),
                 subject
             }
+
+            console.log("Result", result)
             await createQuestion(result)
             setQuestionText("")                        //reset the states variables used to manage the form inputs
             setQestionType("single")
@@ -93,7 +96,6 @@ const AddQuestion = () => {
                     <div className="card">
                         <div className="card-header">
                             <h5 className="card-title">Add New Question</h5>
-
                         </div>
                         <div className="card-body">
                             <form onSubmit={handleSubmit} className="p-2">
@@ -108,6 +110,11 @@ const AddQuestion = () => {
                                         className='form-control '>
                                         <option value={""}>Select a Subject</option>
                                         <option value={"New"}>Add New Subject</option>
+                                        {subjectOptions.map((option) => (
+											<option key={option} value={option}>
+												{option}
+											</option>
+										))}
                                     </select>
                                 </div>
                                 
@@ -186,18 +193,18 @@ const AddQuestion = () => {
                                     </button>
                                 </div>
                                 {questionType === "single" && (
-                                    <div className="mb-3">                        
-                                        <label htmlFor="answer" className='form-label text-info'>
-                                            Correct Answer
-                                        </label>
-                                        <input
-                                            type='text'
-                                            className='form-control'
-                                            id='answer'
-                                            value={correctAnswers[0]}
-                                            onChange={(e)=> (0 ,e.target.value)}
-                                        />
-                                    </div>
+                                    <div className="mb-3">
+										<label htmlFor="answer" className="form-label text-success">
+											Correct Answer
+										</label>
+										<input
+											type="text"
+											className="form-control"
+											id="answer"
+											value={correctAnswers[0]}
+											onChange={(e) => handleCorrectAnswerChange(0, e.target.value)}
+										/>
+									</div>
                                 )}
                                 {questionType === "multiple" && (
                                     <div className="mb-3">                        
@@ -236,11 +243,10 @@ const AddQuestion = () => {
 									<button type="submit" className="btn btn-outline-success mr-2">
 										Save Question
 									</button>
-									{/* <Link to={"/all-quizzes"} className="btn btn-outline-primary ml-2">
+									<Link to={"/all-quizzes"} className="btn btn-outline-primary ml-2">
 										Back to existing questions
-									</Link> */}
+									</Link>
 								</div>
-
                             </form>
                         </div>
                     </div>
