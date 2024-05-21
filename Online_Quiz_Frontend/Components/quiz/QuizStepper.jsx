@@ -108,6 +108,38 @@ import { getSubjects } from "../../utils/QuizService"
 
 		return (
 			<section className="mt-5">
+				<h3 style={{ color: "GrayText" }} className="mb-4">
+					Welcome to quiz online
+				</h3>
+				{renderProgressBar()}
+				<div className="card">
+					<div className="card-body">
+						{renderStepContent()}
+						<div className="d-flex justify-content-between mt-4">
+							{currentStep > 1 && (
+								<button className="btn btn-primary" onClick={handlePrevious}>
+									Previous
+								</button>
+							)}
+							{currentStep < 3 && (
+								<button
+									className="btn btn-primary"
+									onClick={handleNext}
+									disabled={
+										(currentStep === 1 && !selectedSubject) ||
+										(currentStep === 2 && !selectedNumQuestions)
+									}>
+									Next
+								</button>
+							)}
+							{currentStep === 3 && (
+								<button className="btn btn-success" onClick={handleNext}>
+									Start Quiz
+								</button>
+							)}
+						</div>
+					</div>
+				</div>
 			</section>
 		)
  }
