@@ -1,11 +1,12 @@
 import axios from 'axios';	
 
 export const api = axios.create({
-    baseURL: 'http://localhost:9192/api/quizzes',
+    baseURL: 'http://localhost:8080/api/quizzes',
 })
 
 export const createQuestion = async(quizQuestion) => {
     try {
+        console.log("quizQuestion", quizQuestion)
         const response = await api.post(`/create-new-question`,quizQuestion)
         return response.data
     } catch (error) {

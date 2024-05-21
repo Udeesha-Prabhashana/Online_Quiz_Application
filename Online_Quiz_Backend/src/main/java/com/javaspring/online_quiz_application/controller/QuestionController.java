@@ -9,8 +9,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import static  org.springframework.http.HttpStatus.CREATED;
+
 import java.util.*;
 
+@CrossOrigin("http://localhost:5173")
 @RestController
 @RequestMapping("/api/quizzes")
 @RequiredArgsConstructor
@@ -62,6 +70,7 @@ public class QuestionController {
     @GetMapping("/quiz/fetch-questions-for-user")
     public ResponseEntity<List <Question>> getQuestionsForUser(@RequestParam Integer numOfQuestions , @RequestParam String subject){
         List<Question> allQuestions = questionService.getQuestionsForUser( numOfQuestions , subject);
+
         List<Question> mutableQuestions = new ArrayList<>(allQuestions);
         Collections.shuffle(mutableQuestions);
 
