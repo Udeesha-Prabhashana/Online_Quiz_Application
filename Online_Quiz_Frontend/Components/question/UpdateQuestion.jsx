@@ -107,9 +107,9 @@ function UpdateQuestion() {
 						<button type="submit" className="btn btn-sm btn-outline-warning">
 							Update question
 						</button>
-						{/* <Link to={"/all-quizzes"} className="btn btn-outline-primary ml-2">
+						<Link to={"/all-quizzes"} className="btn btn-outline-primary ml-2">
 							Back to all questions
-						</Link> */}
+						</Link>
 					</div>
 				</form>
 			</div>
