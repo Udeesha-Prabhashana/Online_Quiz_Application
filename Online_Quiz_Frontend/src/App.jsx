@@ -6,15 +6,17 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Quiz from '../Components/quiz/Quiz'
 import QuizStepper from '../Components/quiz/QuizStepper'
 import QuizResult from '../Components/quiz/QuizResult'
+import Navbar from '../Components/layout/NavBar'
+import Home from '../Components/Home'
 
 function App() {
 
   return (
     <main className="container mt-5 mb-5">
 			<Router>
-				{/* <Navbar /> */}
+				<Navbar />
 				<Routes>
-					{/* <Route path="/" element={<Home />} /> */}
+					<Route path="/" element={<Home />} />
 					<Route path="/quiz-stepper" element={<QuizStepper />} />
 					<Route path="/take-quiz" element={<Quiz />} />
 					{/* <Route path="/admin" element={<Admin />} /> */}
