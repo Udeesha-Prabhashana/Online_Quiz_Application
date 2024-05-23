@@ -30,7 +30,6 @@ public class QuestionController {
     public ResponseEntity<Question> createQuestion (@Valid @RequestBody Question question){
         Question createdQuestion = questionService.createQuestion(question);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdQuestion);
-
     }
 
     @GetMapping("/all-question")

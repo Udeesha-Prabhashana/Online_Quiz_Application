@@ -22,10 +22,9 @@ public class Question {
     private String subject;
     @NotBlank
     private String questionType;
-    @NotBlank
     @ElementCollection
     private List<String> choices;
-    @NotBlank                 //Java Bean Validation framework,
+
     @ElementCollection
     private List<String> correctAnswers;
 

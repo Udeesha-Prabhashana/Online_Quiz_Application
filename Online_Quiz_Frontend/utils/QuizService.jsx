@@ -16,7 +16,9 @@ export const createQuestion = async(quizQuestion) => {
 
 export const GetAllQuestions = async () => {
     try {
+        console.log("Run")
         const response = await api.get(`/all-question`)
+        console.log("REs", response)
         return response.data
     } catch (error) {
         console.log(error)

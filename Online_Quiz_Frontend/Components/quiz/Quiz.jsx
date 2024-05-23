@@ -1,35 +1,34 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useLocation } from "react-router-dom"
 import { fetchQuizForUser } from '../../utils/QuizService'
-const Quiz = () => {
+import AnswerOptions from '../../utils/AnswerOptions'
 
-    const [quizQuestions, setQuizQuestions] = useState([{
-        id:"", correctAnswers:"" , question: "" ,questionType: ""
-    }])
-    const [selectedAnswers, setSelectedAnswers] = useState([{ id: "", answer: "" }])
+const Quiz = () => {
+	const [quizQuestions, setQuizQuestions] = useState([
+		{ id: "", correctAnswers: "", question: "", questionType: "" }
+	])
+	const [selectedAnswers, setSelectedAnswers] = useState([{ id: "", answer: "" }])
 	const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
 	const [totalScores, setTotalScores] = useState(0)
-	const location = useLocation
+	const location = useLocation()
 	const navigate = useNavigate()
-    const { selectedSubject, selectedNumQuestions } = location.state
-    
+	const { selectedSubject, selectedNumQuestions } = location.state
 
-    useEffect(()=> {
-        fetchQuizData()
-    },[])
+	useEffect(() => {
+		fetchQuizData()
+	}, [])
 
-    const fetchQuizData = async() => {
-        if (selectedSubject && selectedNumQuestions) {
-            const questions = await fetchQuizForUser(selectedNumQuestions, selectedSubject)
-            setQuizQuestions(questions)
-        }
-    }
+	const fetchQuizData = async () => {
+		if (selectedNumQuestions && selectedSubject) {
+			const questions = await fetchQuizForUser(selectedNumQuestions, selectedSubject)
+			setQuizQuestions(questions)
+		}
+	}
 
-    const handleAnswerChange = (questionId , answer ) => {
-        setSelectedAnswers((prevAnswers) => {
-            const existingAnswerIndex = prevAnswers.findIndex((answerObj) => answerObj.id === questionId)
-            
-            const selectedAnswer = Array.isArray(answer)
+	const handleAnswerChange = (questionId, answer) => {
+		setSelectedAnswers((prevAnswers) => {
+			const existingAnswerIndex = prevAnswers.findIndex((answerObj) => answerObj.id === questionId)
+			const selectedAnswer = Array.isArray(answer)
 				? answer.map((a) => a.charAt(0))
 				: answer.charAt(0)
 
@@ -43,10 +42,10 @@ const Quiz = () => {
 
 				return [...prevAnswers, newAnswer]
 			}
-        })
-    }
+		})
+	}
 
-    const isChecked = (questionId, choice) => {
+	const isChecked = (questionId, choice) => {
 		const selectedAnswer = selectedAnswers.find((answer) => answer.id === questionId)
 		if (!selectedAnswer) {
 			return false
@@ -55,9 +54,9 @@ const Quiz = () => {
 			return selectedAnswer.answer.includes(choice.charAt(0))
 		}
 		return selectedAnswer.answer === choice.charAt(0)
-    }
-    
-    const handleCheckboxChange = (questionId, choice) => {
+	}
+
+	const handleCheckboxChange = (questionId, choice) => {
 		setSelectedAnswers((prevAnswers) => {
 			const existingAnswerIndex = prevAnswers.findIndex((answerObj) => answerObj.id === questionId)
 			const selectedAnswer = Array.isArray(choice)
@@ -83,32 +82,34 @@ const Quiz = () => {
 				return [...prevAnswers, newAnswer]
 			}
 		})
-    }
-    
-    const handleSubmit = () => {
-    let scores = 0;
-    quizQuestions.forEach((question) => {
-        const selectedAnswer = selectedAnswers.find((answer) => answer.id === question.id);
-        if (selectedAnswer) {
-        const selectedOptions = Array.isArray(selectedAnswer.answer)
-            ? selectedAnswer.answer.map((option) => option.charAt(0))
-            : [selectedAnswer.answer.charAt(0)];
-        const correctOptions = Array.isArray(question.correctAnswers)
-            ? question.correctAnswers.map((option) => option.charAt(0))
-            : [question.correctAnswers.charAt(0)];
-        const isCorrect = selectedOptions.length === correctOptions.length && selectedOptions.every((option) => correctOptions.includes(option));
-        if (isCorrect) {
-            scores++;
-        }
-        }
-    });
-    setTotalScores(scores);
-    setSelectedAnswers([]);
-    setCurrentQuestionIndex(0);
-    navigate("/quiz-result", { state: { quizQuestions, totalScores: scores } });
-    };
+	}
 
-    const handleNextQuestion = () => {
+
+const handleSubmit = () => {
+  let scores = 0;
+  quizQuestions.forEach((question) => {
+    const selectedAnswer = selectedAnswers.find((answer) => answer.id === question.id);
+    if (selectedAnswer) {
+      const selectedOptions = Array.isArray(selectedAnswer.answer)
+        ? selectedAnswer.answer.map((option) => option.charAt(0))
+        : [selectedAnswer.answer.charAt(0)];
+      const correctOptions = Array.isArray(question.correctAnswers)
+        ? question.correctAnswers.map((option) => option.charAt(0))
+        : [question.correctAnswers.charAt(0)];
+      const isCorrect = selectedOptions.length === correctOptions.length && selectedOptions.every((option) => correctOptions.includes(option));
+      if (isCorrect) {
+        scores++;
+      }
+    }
+  });
+  setTotalScores(scores);
+  setSelectedAnswers([]);
+  setCurrentQuestionIndex(0);
+  navigate("/quiz-result", { state: { quizQuestions, totalScores: scores } });
+};
+
+
+	const handleNextQuestion = () => {
 		if (currentQuestionIndex < quizQuestions.length - 1) {
 			setCurrentQuestionIndex((prevIndex) => prevIndex + 1)
 			console.log(selectedAnswers)
@@ -123,8 +124,7 @@ const Quiz = () => {
 		}
 	}
 
-
-  return (
+	return (
 		<div className="p-5">
 			<h3 className="text-info">
 				Question {quizQuestions.length > 0 ? currentQuestionIndex + 1 : 0} of {quizQuestions.length}
